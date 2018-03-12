@@ -1,30 +1,48 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Suggestion_Model
-from .forms import Suggestion_Form
+from .models import Survey_Model
+from .forms import Survey_Form
 
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def index(request):
     #return HttpResponse("CINS465 Hello World")
     return render(request, 'index.html', {"world_template":"CINS465 Hello World"})
 
-def Suggestion_view(request):
+def survey_view(request):
     if request.method == 'POST':
-        form = Suggestion_Form(request.POST)
+        form = Survey_Form(request.POST)
         if form.is_valid():
-            suggest = Suggestion_Model(
-                suggestion=form.cleaned_data['suggestion']
+            surv = Survey_Model(
+                survey_name=form.cleaned_data['survey_name'],
+                survey_creation=form.cleaned_data['survey_creation'],
+                survey_size=form.cleaned_data['survey_size']
             )
-            suggest.save()
-            form = Suggestion_Form()
+            surv.save()
+            form = Survey_Form()
     else:
-        form = Suggestion_Form()
+        form = Survey_Form()
 
-    suggestion_list = Suggestion_Model.objects.all()
+    survey_list = Survey_Model.objects.all()
     context = {
-        "suggestion_list":suggestion_list,
+        "survey_list":survey_list,
         "form":form
         }
-    return render(request, 'suggestion.html', context)
+    return render(request, 'survey.html', context)
+
+def list(request, page_num):
+    if page_num>=1:
+        example_list=[]
+        for i in range(page_num):
+            example_list+=[i+1]
+
+    else:
+        example_list=None
+    #return HttpResponse("Hello World")
+    context={
+        "page_template":page_num,
+        "example_list":example_list
+        }
+    return render(request, 'list.html',context)

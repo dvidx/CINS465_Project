@@ -1,0 +1,35 @@
+{% extends "base.html"%}
+
+{% block title %}
+Survey
+{% endblock %}
+
+{% block body %}
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell" style="padding-top: 50px">
+      <h1><center>Create a survey<center></h1>
+      <form action="/survey/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" class="button expanded" value="Submit" />
+      </form>
+    </div>
+    <div class="large-12 cell" style="padding-top: 50px">
+      <h1><center>Surveys</center></h1>
+    </div>
+
+      {% for item in survey_list %}
+      <ul style="list-style-type: none" class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
+        <li>
+          <div class="panel callout radius">
+          <h5>{{ item.survey_name }}</h5>
+          <p>{{ item.survey_creation }}</p>
+          </div>
+        </li>
+      </ul>
+      {% endfor %}
+
+  </div>
+</div>
+{% endblock %}
