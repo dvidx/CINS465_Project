@@ -1,5 +1,7 @@
 {% extends "base.html"%}
 
+{% load static %}
+
 {% block title %}
 Survey
 {% endblock %}
@@ -9,27 +11,58 @@ Survey
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell" style="padding-top: 50px">
       <h1><center>Create a survey<center></h1>
-      <form action="/survey/" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" class="button expanded" value="Submit" />
-      </form>
+        <form action="/survey/" method="post">
+            {% csrf_token %}
+            <div class="grid-x grid-padding-x small-up-4">
+            <div class="cell">
+            {{ form.survey_name.errors }}
+            {{ form.survey_name.label_tag }}
+            {{ form.survey_name }}
+            </div>
+            <div class="cell">
+            {{ form.survey_creation.label_tag }}
+            {{ form.survey_creation }}
+            </div>
+            <div class="cell">
+            {{ form.survey_size.label_tag }}
+            {{ form.survey_size }}
+            </div>
+            <div class="cell">
+            {{ form.survey_description.label_tag }}
+            {{ form.survey_description }}
+            </div>
+            <input type="submit" class="button expanded" value="Submit"/>
+        </form>
+        <!-- {% verbatim %}
+        <transition name="fade">
+          <p v-if="!show">Successfully submitted!</p>
+        </transition>
+        {% endverbatim %} -->
     </div>
     <div class="large-12 cell" style="padding-top: 50px">
       <h1><center>Surveys</center></h1>
-    </div>
-
-      {% for item in survey_list %}
-      <ul style="list-style-type: none" class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
-        <li>
-          <div class="panel callout radius">
-          <h5>{{ item.survey_name }}</h5>
-          <p>{{ item.survey_creation }}</p>
+      <div class="grid-x grid-padding-x small-up-4" data-equalizer data-equalize-on="medium" id="load-survey">
+        <div class="cell" v-for="item in surveys">
+          {% verbatim %}
+          <span v-bind:title= item.description>
+          <div class="panel callout radius" data-equalizer-watch>
+          <h5>{{ item.survey }}</h5>
+          <p>Created on {{ item.creation }}</p>
           </div>
-        </li>
-      </ul>
-      {% endfor %}
-
+          </span>
+          {% endverbatim %}
+        </div>
+      </div>
+    </div>
+    <div class="large-12 cell" style="padding-top: 50px">
+      <h1><center>Description</center></h1>
+      <p><center>1. Text in panel through JS from JSON</center></p>
+      <p><center>2. Hovering over panel shows description</center></p>
+    </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "js/vueapp.js" %}"></script>
 {% endblock %}
