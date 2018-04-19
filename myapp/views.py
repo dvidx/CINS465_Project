@@ -1,20 +1,52 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 
 from .models import *
-from .forms import Survey_Form
+from .forms import *
 
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 import json
 import sys
 
 
-
-# Create your views here.
+# Create html as variable your views here.
 def index(request):
     #return HttpResponse("CINS465 Hello World")
-    return render(request, 'index.html', {"world_template":"CINS465 Hello World"})
+    return render(request, 'index.html', {"world_template":"Ticket"})
+
+def map(request):
+    if request.method == 'POST':
+        form = Event_Form(request.POST)
+        if form.is_valid():
+            event = Event_Model(
+                name=form.cleaned_data['name'],
+                start_date=form.cleaned_data['start_date'],
+                end_date=form.cleaned_data['end_date'],
+                location=form.cleaned_data['location'],
+                description=form.cleaned_data['description'],
+                image=form.cleaned_data['image'],
+                # longitude=request.POST['lat'],
+                # latitude=request.POST['lng'],
+            )
+            event.save()
+            form = Event_Form()
+    else:
+        form = Event_Form()
+
+    event_list = Event_Model.objects.all()
+    context = {
+        "event_list":event_list,
+        "form":form
+        }
+    return render(request, 'map.html', context)
+
+def chat(request):
+    return render(request, 'chat.html')
+
+def event(request):
+    return render(request, 'event.html')
 
 def survey_view(request):
     if request.method == 'POST':
@@ -55,6 +87,7 @@ def survey_api(request):
             surv = Survey_Model.objects.get(pk=json_data['id'])
             surv.survey = json_data['survey']
             surv.save()
+
             #print(json_data['data'])
             return HttpResponse("hello")
         except:
@@ -83,19 +116,13 @@ def survey_api(request):
         print(survey_dictionary)
         return JsonResponse(survey_dictionary)
 
-
-
-def list(request, page_num):
-    if page_num>=1:
-        example_list=[]
-        for i in range(page_num):
-            example_list+=[i+1]
-
+def register(request):
+    if request.method == 'POST':
+        form = registration_form(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect("/")
     else:
-        example_list=None
-    #return HttpResponse("Hello World")
-    context={
-        "page_template":page_num,
-        "example_list":example_list
-        }
-    return render(request, 'list.html',context)
+        form = registration_form()
+    context = {"form":form}
+    return render(request,"registration/register.html",context)

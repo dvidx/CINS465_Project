@@ -22,9 +22,9 @@ var app = new Vue({
   }
 })
 
-// var app2 = new Vue({
-//   el: '#demo',
-//   data: {
-//     show: false
-//   }
-// })
+var chat = new Vue({
+  el: 'load-message',
+  data: {
+    chat: [],
+  },
+})

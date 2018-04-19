@@ -41,15 +41,13 @@ Survey
     </div>
     <div class="large-12 cell" style="padding-top: 50px">
       <h1><center>Surveys</center></h1>
-      <div class="grid-x grid-padding-x small-up-4" data-equalizer data-equalize-on="medium" id="load-survey">
+      <div class="grid-x grid-padding-x small-up-4" id="load-survey">
         <div class="cell" v-for="item in surveys">
           {% verbatim %}
-          <span v-bind:title= item.description>
-          <div class="panel callout radius" data-equalizer-watch>
-          <h5>{{ item.survey }}</h5>
-          <p>Created on {{ item.creation }}</p>
+          <div class="box">
+            <h5>{{ item.survey }}</h5>
+            <p>Created on {{ item.creation }}</p>
           </div>
-          </span>
           {% endverbatim %}
         </div>
       </div>
