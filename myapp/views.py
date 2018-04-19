@@ -115,6 +115,56 @@ def survey_api(request):
             }]
         print(survey_dictionary)
         return JsonResponse(survey_dictionary)
+        
+@csrf_exempt
+def event_api(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        try:
+            #print(json_data['data'])
+            eve = Event_Model(event=json_data['event'])
+            eve.save()
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == "PUT":
+        json_data = json.loads(request.body)
+        try:
+            eve = Event_Model.objects.get(pk=json_data['id'])
+            eve.event = json_data['event']
+            eve.save()
+
+            #print(json_data['data'])
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == "DELETE":
+        json_data = json.loads(request.body)
+        try:
+            eve = Event_Model.objects.get(pk=json_data['id'])
+            eve.delete()
+            #print(json_data['data'])
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == 'GET':
+        event_list = Event_Model.objects.all()
+        event_dictionary = {}
+        event_dictionary["events"]=[]
+        for eve in event_list:
+            event_dictionary["events"] += [{
+                "id":eve.id,
+                "event":eve.name,
+                "startdate":eve.start_date,
+                "enddate":eve.end_date,
+                "location":eve.location,
+                "description":eve.description,
+                "lng":eve.lng,
+                "lat":eve.lat
+            }]
+        print(event_dictionary)
+        return JsonResponse(event_dictionary)
+
 
 # https://collingrady.wordpress.com/2008/02/18/editing-multiple-objects-in-django-with-newforms/
 def register(request):

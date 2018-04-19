@@ -11,6 +11,7 @@ urlpatterns = [
     path('map/',views.map),
     path('chat/',views.chat),
     path('event/',views.event),
+    path('events/',views.event_api),
     path('login/', adminviews.login, {
         'template_name':'registration/login.html',
         'authentication_form':LoginForm

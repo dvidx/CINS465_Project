@@ -74,7 +74,27 @@ function initMap() {
     }
   }
 
-  // Try HTML5 geolocation.
+  // Markers from DB
+  var script = document.createElement('script');
+
+  script.src = 'http://localhost:8000/events/';
+  document.getElementsByTagName('head')[0].appendChild(script);
+
+  // Loop through the results array and place a marker for each
+  // set of coordinates.
+  window.eqfeed_callback = function(results) {
+    for (var i = 0; i < results.length; i++) {
+      var lat = results.events[i].lat;
+      var lng = results.events[i].lng;
+      var latLng = new google.maps.LatLng(lat,lng);
+      var marker = new google.maps.Marker({
+        position: latLng,
+        map: map
+      });
+    }
+  }
+
+  // Geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
