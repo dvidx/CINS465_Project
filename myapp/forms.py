@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import validate_slug
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.core.files.images import get_image_dimensions
 
 from .models import *
 
@@ -53,3 +54,11 @@ class registration_form(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class profil_form(forms.ModelForm):
+
+    picture = forms.ImageField(required=False)
+
+    class Meta:
+        model = Profil_Model
+        exclude = ("user", "creation")

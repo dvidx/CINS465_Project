@@ -116,13 +116,22 @@ def survey_api(request):
         print(survey_dictionary)
         return JsonResponse(survey_dictionary)
 
+# https://collingrady.wordpress.com/2008/02/18/editing-multiple-objects-in-django-with-newforms/
 def register(request):
     if request.method == 'POST':
-        form = registration_form(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
+        rform = registration_form(request.POST)
+        pform = profil_form(request.POST)
+        if rform.is_valid() and pform.is_valid():
+            new_user = rform.save(commit=True)
+            new_profil = pform.save(commit=False)
+            new_profil.user = new_user
+            new_profil.save()
             return redirect("/")
     else:
-        form = registration_form()
-    context = {"form":form}
+        rform = registration_form()
+        pform = profil_form()
+    context = {
+        "rform":rform,
+        "pform":pform
+    }
     return render(request,"registration/register.html",context)

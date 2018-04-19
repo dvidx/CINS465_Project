@@ -33,9 +33,11 @@ footer h4{
     height: 90%;
     width: 100%;
     padding: 15px;
-    background-color: rgba(200,200,200,0.8);
+    background-color: #e6e6e6;
     box-shadow: 10px 10px 5px grey;
 }
+
+/*  Google Maps */
 
 #map {
  height: 700px;
@@ -84,16 +86,7 @@ footer h4{
     cursor: pointer;
 }
 
-#wrapper, #loginform {
-    margin:0 auto;
-    padding-bottom:25px;
-    background:#EBF4FB;
-    width:504px;
-    border:1px solid #ACD8F0; }
-
-#loginform { padding-top:18px; }
-
-    #loginform p { margin: 5px; }
+/* Chat */
 
 #chatbox {
     text-align:left;
@@ -109,30 +102,6 @@ footer h4{
 #usermsg {
     width:395px;
     border:1px solid #ACD8F0; }
-
-#submit { width: 60px; }
-
-.error { color: #ff0000; }
-
-#menu { padding:12.5px 25px 12.5px 25px; }
-
-.welcome { float:left; }
-
-.logout { float:right; }
-
-.msgln { margin:0 0 2px 0; }
-
-.vertical-menu {
-    width: 100%; /* Set a width if you like */
-}
-
-.vertical-menu a {
-    background-color: #eee; /* Grey background color */
-    color: black; /* Black text color */
-    display: block; /* Make the links appear below each other */
-    padding: 12px; /* Add some padding */
-    text-decoration: none; /* Remove underline from links */
-}
 
 #Contact{
     background-color: #1779AB; /* Grey background color */

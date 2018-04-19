@@ -11,59 +11,46 @@ Event
 <div class="wrap" style="text-align: center">
   <div class="row">
     <div class="small-6 small-centered columns">
-      <h1>Event</h1>
+      <h1>Events</h1>
       <br>
-      <hr class="dotted">
     </div>
   </div>
-    <ul class="menu align-center">
-      <li><a href="#">Pic</a></li>
-      <li><a href="#">User</a></li>
-      <li><a href="#">Price</a></li>
-      <li><a href="#">Time left</a></li>
-      <li><a href="#" class="button">Bid</a></li>
-    </ul>
-    <hr class="dotted">
-    <ul class="menu align-center">
-      <li><a href="#">Pic</a></li>
-      <li><a href="#">User</a></li>
-      <li><a href="#">Price</a></li>
-      <li><a href="#">Time left</a></li>
-      <li><a href="#" class="button">Bid</a></li>
-    </ul>
-    <hr class="dotted">
-
-<table class="hover">
+<table class="hover" id="load-contacts">
   <thead>
     <tr>
-      <th width="200">Table Header</th>
-      <th>Table Header</th>
-      <th width="150">Table Header</th>
-      <th width="150">Table Header</th>
+      <th style="text-align: center">Pic</th>
+      <th style="text-align: center">User</th>
+      <th style="text-align: center">Price</th>
+      <th style="text-align: center">Time left</th>
+      <th style="text-align: center"></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody v-for="item in event">
     <tr>
-      <td>Content Goes Here</td>
-      <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-      <td>Content Goes Here</td>
-      <td>Content Goes Here</td>
+      {% verbatim %}
+      <td>{{ item.user }}</td>
+      <td>{{ item.user }}</td>
+      <td>{{ item.user }}</td>
+      <td>{{ item.user }}</td>
+      <td ><a href="#" class="button">Bid</a></td>
+      {% endverbatim %}
     </tr>
     <tr>
-      <td>Content Goes Here</td>
-      <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-      <td>Content Goes Here</td>
-      <td>Content Goes Here</td>
+      <td>Test</td>
+      <td>Test</td>
+      <td>Test</td>
+      <td>Test</td>
+      <td ><a href="#" class="button">Bid</a></td>
     </tr>
     <tr>
-      <td>Content Goes Here</td>
-      <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-      <td>Content Goes Here</td>
-      <td>Content Goes Here</td>
+      <td>{{ item.user }}</td>
+      <td>{{ item.user }}</td>
+      <td>{{ item.user }}</td>
+      <td>{{ item.user }}</td>
+      <td ><a href="#" class="button">Bid</a></td>
     </tr>
   </tbody>
 </table>
-
 </div>
 
 {% endblock %}

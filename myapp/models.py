@@ -32,20 +32,31 @@ class Ticket_Model(models.Model):
         User,
         on_delete=models.CASCADE
     )
-    event = models.ForeignKey(
-        'Event_Model',
+    event = models.OneToOneField(
+        Event_Model,
         on_delete=models.CASCADE
     )
     price = models.DecimalField(max_digits=6, decimal_places=2)
     info = models.CharField(max_length=240)
 
-class Profil_Model(models.Model):
+class Bid_Model(models.Model):
+    ticket = models.ForeignKey(
+        Ticket_Model,
+        on_delete=models.CASCADE
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE
     )
+    bid = models.DecimalField(max_digits=6, decimal_places=2)
+
+class Profil_Model(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
     creation=models.DateTimeField(auto_now_add=True, blank=True)
-    rating=models.IntegerField()
     picture=models.ImageField(
         upload_to=None,
         height_field=None,
