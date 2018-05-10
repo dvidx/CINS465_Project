@@ -43,32 +43,19 @@ def map(request):
     return render(request, 'map.html', context)
 
 def chat(request):
-    return render(request, 'chat.html')
+    if request.method == 'POST':
+        json_data = request.POST.get('url')
+        print(json_data)
+        return HttpResponse("post request success")
+
+    current_user_id = request.user.id
+    context = {
+        "current_user_id":current_user_id,
+        }
+    return render(request, 'chat.html', context)
 
 def event(request):
     return render(request, 'event.html')
-
-def survey_view(request):
-    if request.method == 'POST':
-        form = Survey_Form(request.POST)
-        if form.is_valid():
-            surv = Survey_Model(
-                survey_name=form.cleaned_data['survey_name'],
-                survey_creation=form.cleaned_data['survey_creation'],
-                survey_size=form.cleaned_data['survey_size'],
-                survey_description=form.cleaned_data['survey_description']
-            )
-            surv.save()
-            form = Survey_Form()
-    else:
-        form = Survey_Form()
-
-    survey_list = Survey_Model.objects.all()
-    context = {
-        "survey_list":survey_list,
-        "form":form
-        }
-    return render(request, 'survey.html', context)
 
 @csrf_exempt
 def survey_api(request):
@@ -115,7 +102,7 @@ def survey_api(request):
             }]
         print(survey_dictionary)
         return JsonResponse(survey_dictionary)
-        
+
 @csrf_exempt
 def event_api(request):
     if request.method == 'POST':
@@ -160,10 +147,57 @@ def event_api(request):
                 "location":eve.location,
                 "description":eve.description,
                 "lng":eve.lng,
-                "lat":eve.lat
+                "lat":eve.lat,
+                "image":eve.image.path
             }]
         print(event_dictionary)
         return JsonResponse(event_dictionary)
+
+@csrf_exempt
+def chat_api(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        try:
+            #print(json_data['data'])
+            ch = Chatline_Model(chat=json_data['chat'])
+            ch.save()
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == "PUT":
+        json_data = json.loads(request.body)
+        try:
+            ch = Chatline_Model.objects.get(pk=json_data['id'])
+            ch.chat = json_data['chat']
+            ch.save()
+
+            #print(json_data['data'])
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == "DELETE":
+        json_data = json.loads(request.body)
+        try:
+            ch = Chatline_Model.objects.get(pk=json_data['id'])
+            ch.delete()
+            #print(json_data['data'])
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == 'GET':
+        chat_list = Chatline_Model.objects.all()
+        chat_dictionary = {}
+        chat_dictionary["chats"]=[]
+        for ch in chat_list:
+            chat_dictionary["chats"] += [{
+                "id":ch.id,
+                "chat":ch.chat.id,
+                "user":ch.user.username,
+                "creation":ch.creation,
+                "text":ch.text,
+            }]
+        print(chat_dictionary)
+        return JsonResponse(chat_dictionary)
 
 
 # https://collingrady.wordpress.com/2008/02/18/editing-multiple-objects-in-django-with-newforms/

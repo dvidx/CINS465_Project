@@ -6,10 +6,10 @@ from django.contrib.auth import views as adminviews
 
 urlpatterns = [
     path('',views.index),
-    path('survey/',views.survey_view),
     path('surveys/',views.survey_api),
     path('map/',views.map),
     path('chat/',views.chat),
+    path('chats/',views.chat_api),
     path('event/',views.event),
     path('events/',views.event_api),
     path('login/', adminviews.login, {

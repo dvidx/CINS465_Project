@@ -7,28 +7,28 @@ Homepage
 {% endblock %}
 
 {% block body %}
-<!-- <div class="grid-container">
-  <div class="grid-x grid-padding-x">
-    <div class="large-12 cell">
-      <h1><center>{{ world_template }}</center></h1>
-    </div>
-  </div>
-</div> -->
+
 <!-- Main Content -->
 <section class="main">
   <div class="wrap">
     <div class="grid-fluid">
-      <div class="grid-x grid-padding-x" id="load-survey">
-        <div class="medium-4 cell" v-for="item in surveys">
+      <div class="grid-x grid-padding-x" id="load-events">
+        <div class="medium-4 cell" v-for="item in events">
           {% verbatim %}
-          <div class="box">
-            <h5>{{ item.name }}</h5>
-            <p>Created on {{ item.creation }}</p>
-          </div>
+          <a href="http://localhost:8000/event/" style="color:inherit">
+            <div class="box">
+              <h5>{{ item.event }}</h5>
+              <p>{{ item.description }}</p>
+            </div>
+          </a>
           {% endverbatim %}
         </div>
       </div>
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "js/vueapp.js" %}"></script>
 {% endblock %}

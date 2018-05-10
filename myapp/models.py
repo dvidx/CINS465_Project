@@ -20,12 +20,13 @@ class Event_Model(models.Model):
     location = models.CharField(max_length=50)
     description = models.CharField(max_length=240)
     image = models.ImageField(
-        upload_to=None,
-        height_field=None,
-        width_field=None
+        upload_to='uploads/%Y/%m/%d/'
     )
     lng = models.DecimalField(max_digits=10, decimal_places=6)
     lat = models.DecimalField(max_digits=10, decimal_places=6)
+
+    def __str__(self):
+        return "Event " + str(self.id) + ": " + str(self.name)
 
 class Ticket_Model(models.Model):
     user = models.ForeignKey(
@@ -39,6 +40,9 @@ class Ticket_Model(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     info = models.CharField(max_length=240)
 
+    def __str__(self):
+        return "Ticket " + str(self.id) + ": " + str(self.user)
+
 class Bid_Model(models.Model):
     ticket = models.ForeignKey(
         Ticket_Model,
@@ -49,6 +53,9 @@ class Bid_Model(models.Model):
         on_delete=models.CASCADE
     )
     bid = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return "Bid " + str(self.id) + ": " + str(self.ticket)
 
 class Profil_Model(models.Model):
     user = models.OneToOneField(
