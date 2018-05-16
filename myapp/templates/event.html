@@ -1,0 +1,72 @@
+{% extends "base.html"%}
+
+{% load static %}
+
+{% block title %}
+Event
+{% endblock %}
+
+{% block body %}
+
+<div class="wrap" style="text-align: center">
+  <div class="row">
+    <div class="small-6 small-centered columns">
+      <br>
+      <h1>Events</h1>
+      <br>
+    </div>
+  </div>
+<table class="hover" id="load-ticket">
+  <thead>
+    <tr>
+      <th style="text-align: center">Event</th>
+      <th style="text-align: center">Sold by</th>
+      <th style="text-align: center">Current bid</th>
+      <th style="text-align: center"></th>
+    </tr>
+  </thead>
+  <tbody v-for="item in tickets">
+    {% verbatim %}
+    <tr>
+      <td>{{ item.event }}</td>
+      <td>{{ item.user }}</td>
+      <td>$ {{ item.price }}</td>
+      <td ><button class="button" data-open="BidModal">Bid</button></td
+    </tr>
+    {% endverbatim %}
+  </tbody>
+</table>
+<br>
+<ul class="accordion"
+    data-responsive-accordion-tabs="accordion medium-tabs large-accordion"
+    data-allow-all-closed="true">
+      <li class="accordion-item" data-accordion-item>
+        <a href="#" class="accordion-title">Sell a ticket</a>
+        <div class="accordion-content" data-tab-content >
+          <center>
+          <form action="/event/" method="post" style="width:50%">
+              {% csrf_token %}
+              {{ ticket_form }}
+              <input type="submit" class="button expanded" name="Ticket" value="Submit"/>
+          </form>
+          </center>
+        </div>
+      </li>
+</ul>
+<br>
+</div>
+
+<div class="reveal" id="BidModal" data-reveal>
+  <form action="/event/" method="post">
+      {% csrf_token %}
+      {{ bid_form }}
+      <input type="submit" class="button expanded" name="Bid" value="Submit"/>
+  </form>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static "js/vueapp.js" %}"></script>
+{% endblock %}

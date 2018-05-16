@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Registration{% endblock %}
+{% block body %}
+<div class="grid-x grid-padding-x">
+  <!-- <div class="large-4 medium-4 small-12 cell"></div> -->
+  <div class="large-6 medium-6 small-12 large-offset-3 medium-offset-3 cell">
+
+    <form action="/register/" method="post">
+        {% csrf_token %}
+        <br>
+        <br>
+        <h4 class="text-center">Register</h4>
+        <br>
+        {{ rform.errors }}
+        {{ rform.username.label_tag }}
+        {{ rform.username }}
+        {{ rform.email.label_tag }}
+        {{ rform.email }}
+        {{ rform.password1.label_tag }}
+        {{ rform.password1 }}
+        {{ rform.password2.label_tag }}
+        {{ rform.password2 }}
+        {{ pform.picture.label_tag }}
+        {{ pform.picture }}
+        <input type="submit" class="button expanded" value="Register" />
+    </form>
+    <br>
+    <br>
+  </div>
+</div>
+{% endblock %}

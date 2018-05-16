@@ -1,0 +1,47 @@
+{% extends "base.html"%}
+
+{% load static %}
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block body %}
+
+<!-- Main Content -->
+<section class="main">
+  <div class="wrap">
+    <div class="grid-fluid">
+      <div class="grid-x grid-padding-x" id="load-events">
+        <div id="boxes" class="medium-4 cell" v-for="item in events">
+          {% verbatim %}
+          <a href="http://localhost:8000/event/" style="color:inherit">
+            <div class="box">
+              <center><h5>{{ item.event }}</h5></center>
+              <hr>
+              <p style="padding: 0px 20px">{{ item.description }}</p>
+            </div>
+          </a>
+          {% endverbatim %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "js/vueapp.js" %}"></script>
+<script>
+$('.contact-name').hide();
+$('#search').click(function(){
+    $('.medium-4 cell').hide();
+    var txt = $('#search-criteria').val();
+    $('.medium-4 cell').each(function(){
+       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+           $(this).show();
+       }
+    });
+});
+</script>
+{% endblock %}
