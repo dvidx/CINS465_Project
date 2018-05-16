@@ -13,11 +13,15 @@ Map
   <div class="modal-content">
     <span class="close">&times;</span>
     <h1><center>Create an event<center></h1>
-    <form action="/event/" method="post">
+    <form action="/map/" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" class="button expanded" value="Submit"/>
-        <span id="LatLng"></span>
+        <input type="text" id="lng" name="lng" style="display: none">
+        <input type="text" id="lat" name="lat" style="display: none">
+        <!-- <input type="submit" class="button expanded" value="Submit"/> -->
+        <br>
+        <button class="button expanded">Submit</button>
+        <!-- <span id="LatLng"></span> -->
     </form>
   </div>
 </div>
@@ -30,26 +34,6 @@ var map;
 var marker;
 var infowindow;
 var gmarkers = [];
-
-// Markers from DB
-$.getJSON('http://localhost:8000/events/', function(results) {
-  for (var i = 0; i < 1; i++) {
-    var lat = results.events[i].lat;
-    lat = Number(lat);
-    var lng = results.events[i].lng;
-    lng = Number(lng);
-    var latLng = {lat: lat, lng: lng};
-
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
-      icon: 'https://cdn3.iconfinder.com/data/icons/buildings-places/512/Festival-24.png'
-    });
-    marker.addListener('click', function() {
-      
-    });
-  }
-});
 
 // Window for event creation
 var modal = document.getElementById('myModal');
@@ -78,7 +62,9 @@ function initMap() {
     var latlng = marker.getPosition();
     var lat = latlng.lat();
     var lng = latlng.lng();
-    document.getElementById("LatLng").innerHTML = "Latitude: " + lat + " & Longitude: " + lng;
+    // document.getElementById("LatLng").innerHTML = "Latitude: " + lat + " & Longitude: " + lng;
+    document.getElementById("lng").value = lng;
+    document.getElementById("lat").value = lat;
 
     gmarkers.push(marker);
     modal.style.display = "block";
@@ -128,6 +114,32 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                         'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
 }
+
+// Markers from DB
+$.getJSON('http://localhost:8000/events/', function(results) {
+
+  var count = 0
+  for (i in results.events) {
+    var count = count + 1;
+  }
+
+  for (var i = 0; i < count; i++) {
+    var lat = results.events[i].lat;
+    lat = Number(lat);
+    var lng = results.events[i].lng;
+    lng = Number(lng);
+    var latLng = {lat: lat, lng: lng};
+
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      icon: 'https://cdn3.iconfinder.com/data/icons/buildings-places/512/Festival-24.png'
+    });
+    marker.addListener('click', function() {
+
+    });
+  }
+});
 
 </script>
 <script async defer

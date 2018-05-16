@@ -8,7 +8,10 @@
 
     <form action="/register/" method="post">
         {% csrf_token %}
+        <br>
+        <br>
         <h4 class="text-center">Register</h4>
+        <br>
         {{ rform.errors }}
         {{ rform.username.label_tag }}
         {{ rform.username }}
@@ -22,6 +25,8 @@
         {{ pform.picture }}
         <input type="submit" class="button expanded" value="Register" />
     </form>
+    <br>
+    <br>
   </div>
 </div>
 {% endblock %}

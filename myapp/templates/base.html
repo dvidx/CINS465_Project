@@ -9,6 +9,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static "css/foundation.css" %}">
     <link rel="stylesheet" href="{% static "css/app.css" %}">
+    <link rel="shortcut icon" type="image/png" href="https://cdn0.iconfinder.com/data/icons/ticket/500/Ticket_star-16.png"/>
     {% block style %}
     {% endblock %}
   </head>
@@ -17,16 +18,17 @@
       <!-- <div class="wrap"> -->
         <div class="top-bar-left">
           <ul class="dropdown menu" data-dropdown-menu>
-            <li class="menu-text" style="color:white">Ticket</li>
+            <li class="menu-text" style="color:white">Ticket465</li>
             <li><a href="/">Home</a></li>
             <li><a href="/map">Map</a></li>
             <li><a href="/chat">Chat</a></li>
+            <li><a href="/event">Events</a></li>
           </ul>
         </div>
         <div class="top-bar-right">
           <ul class="menu">
-            <li><input type="search" placeholder="Search"></li>
-            <li><button type="button" class="button">Search</button></li>
+            <li><input type="search" placeholder="Search" id="search-criteria"></li>
+            <li><button type="button" class="button" id="search" value="search">Search</button></li>
             {% if user.is_authenticated %}
             <li><a href="/logout/">Logout</a></li>
             {% else %}

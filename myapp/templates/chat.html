@@ -7,39 +7,78 @@ Chat
 {% endblock %}
 
 {% block body %}
-<div class="wrap">
+{% if user.is_authenticated %}
+<div class="wrap" style="width: 70%">
   <br>
   <div class="grid-x grid-margin-x">
     <div class="cell auto" id="load-chat">
       <div class="grid-content" v-for="item in chats">
         {% verbatim %}
         <h4>{{ item.user }}</h4>
-        <p>{{ item.text }}</p>
-        <hr>
+        <p style="color: #9c9c9c">{{ item.text }}</p>
+        <small>{{ item.creation }}</small>
+        <hr style="max-width:1920px">
         {% endverbatim %}
       </div>
-      <div class="message-input grid-content collapse shrink">
-        <span class="inline-label">
-          <input type="text" id="msg" placeholder="Message">
-          <a onclick="sendmsg()" class="button">Send</a>
-        </span>
-      </div>
     </div>
-    <div class="cell small-3" id="load-message">
+    <!-- <div class="cell small-3" id="load-message">
       <a id="Contact" class="active">Contacts</a>
       <div class="vertical-menu" v-for="item in chat">
         {% verbatim %}
         <a href="#">{{ item.user }}</a>
         {% endverbatim %}
       </div>
-    </div>
+    </div> -->
+  </div>
+  <br>
+  <div class="message-input grid-content collapse shrink">
+    <form method="post" action="/chat/">
+      {% csrf_token %}
+      <input type="text" placeholder="Message" name="msgfield">
+      <button class="button">Send</button>
+    </form>
   </div>
   <br>
 </div>
+{% else %}
+<div class="wrap">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <h4 class="text-center">You need to be logged <br/> in to view this site</h4>
+  <br>
+  <br>
+  <center>
+    <a href="/login/" class="button large">Login</a><br/>
+    <a href="/register/" class="secondary button large">Register</a>
+  </center>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script>
+//https://stackoverflow.com/questions/17883692/how-to-set-time-delay-in-javascript/26306356
+var delayInMilliseconds = 100; //Delay needed otherwise function executes before json is read
+
+setTimeout(function() {
+  var objDiv = document.getElementById("load-chat");
+  objDiv.scrollTop = objDiv.scrollHeight;
+}, delayInMilliseconds);
+</script>
+
+<!-- <script>
 
 function sendmsg() {
   var user_id = {{ current_user_id }};
@@ -65,6 +104,6 @@ function sendmsg() {
   });
 }
 
-</script>
+</script> -->
 <script src="{% static "js/vueapp.js" %}"></script>
 {% endblock %}

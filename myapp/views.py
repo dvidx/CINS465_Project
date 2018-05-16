@@ -14,11 +14,13 @@ import sys
 # Create html as variable your views here.
 def index(request):
     #return HttpResponse("CINS465 Hello World")
-    return render(request, 'index.html', {"world_template":"Ticket"})
+    return render(request, 'index.html', {"world_template":"Ticket465"})
 
 def map(request):
     if request.method == 'POST':
         form = Event_Form(request.POST)
+        lng = request.POST.get('lng', None)
+        lat = request.POST.get('lat', None)
         if form.is_valid():
             event = Event_Model(
                 name=form.cleaned_data['name'],
@@ -27,11 +29,12 @@ def map(request):
                 location=form.cleaned_data['location'],
                 description=form.cleaned_data['description'],
                 image=form.cleaned_data['image'],
-                # longitude=request.POST['lat'],
-                # latitude=request.POST['lng'],
+                lng=lng,
+                lat=lat
             )
             event.save()
             form = Event_Form()
+
     else:
         form = Event_Form()
 
@@ -44,64 +47,62 @@ def map(request):
 
 def chat(request):
     if request.method == 'POST':
-        json_data = request.POST.get('url')
-        print(json_data)
-        return HttpResponse("post request success")
+        message = request.POST.get('msgfield', None)
+        current_user = request.user
+        current_user_id = request.user.id
+        chat = Chatline_Model(
+            user=current_user,
+            text=message
+        )
+        chat.save()
 
-    current_user_id = request.user.id
+    else:
+        current_user_id = request.user.id
+
     context = {
         "current_user_id":current_user_id,
         }
     return render(request, 'chat.html', context)
 
 def event(request):
-    return render(request, 'event.html')
-
-@csrf_exempt
-def survey_api(request):
     if request.method == 'POST':
-        json_data = json.loads(request.body)
-        try:
-            #print(json_data['data'])
-            surv = Survey_Model(survey=json_data['survey'])
-            surv.save()
-            return HttpResponse("hello")
-        except:
-            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
-    if request.method == "PUT":
-        json_data = json.loads(request.body)
-        try:
-            surv = Survey_Model.objects.get(pk=json_data['id'])
-            surv.survey = json_data['survey']
-            surv.save()
+        if 'Ticket' in request.POST:
+            ticket_form = Ticket_Form(request.POST)
+            if ticket_form.is_valid():
+                ticket = Ticket_Model(
+                    event=ticket_form.cleaned_data['event'],
+                    price=ticket_form.cleaned_data['price'],
+                    info=ticket_form.cleaned_data['info'],
+                    user=request.user
+                )
+                ticket.save()
+                ticket_form = Ticket_Form()
+                bid_form = Bid_Form()
+        elif 'Bid' in request.POST:
+            bid_form = Bid_Form(request.POST)
+            if bid_form.is_valid():
+                bid = Bid_Model(
+                    event=bid_form.cleaned_data['event'],
+                    price=bid_form.cleaned_data['price'],
+                    user=request.user
+                )
+                bid.save()
+                bid_form = Bid_Form()
+                ticket_form = Ticket_Form()
+    else:
+        ticket_form = Ticket_Form()
+        bid_form = Bid_Form()
 
-            #print(json_data['data'])
-            return HttpResponse("hello")
-        except:
-            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
-    if request.method == "DELETE":
-        json_data = json.loads(request.body)
-        try:
-            surv = Survey_Model.objects.get(pk=json_data['id'])
-            surv.delete()
-            #print(json_data['data'])
-            return HttpResponse("hello")
-        except:
-            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
-    if request.method == 'GET':
-        survey_list = Survey_Model.objects.all()
-        survey_dictionary = {}
-        survey_dictionary["surveys"]=[]
-        for surv in survey_list:
-            survey_dictionary["surveys"] += [{
-                "id":surv.id,
-                "survey":surv.survey_name,
-                "creation":surv.survey_creation,
-                "description":surv.survey_description,
-                "size":surv.survey_size
-            }]
-        print(survey_dictionary)
-        return JsonResponse(survey_dictionary)
+    ticket_list = Ticket_Model.objects.all()
+    bid_list = Bid_Model.objects.all()
+
+    context = {
+        "ticket_list":ticket_list,
+        "ticket_form":ticket_form,
+        "bid_list":bid_list,
+        "bid_form":bid_form
+        }
+    return render(request, 'event.html', context)
 
 @csrf_exempt
 def event_api(request):
@@ -148,7 +149,7 @@ def event_api(request):
                 "description":eve.description,
                 "lng":eve.lng,
                 "lat":eve.lat,
-                "image":eve.image.path
+                #"image":eve.image.path
             }]
         print(event_dictionary)
         return JsonResponse(event_dictionary)
@@ -191,13 +192,59 @@ def chat_api(request):
         for ch in chat_list:
             chat_dictionary["chats"] += [{
                 "id":ch.id,
-                "chat":ch.chat.id,
                 "user":ch.user.username,
-                "creation":ch.creation,
+                "creation":ch.creation.strftime("%H:%M:%S - %Y/%m/%d"),
                 "text":ch.text,
             }]
         print(chat_dictionary)
         return JsonResponse(chat_dictionary)
+
+
+@csrf_exempt
+def ticket_api(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        try:
+            #print(json_data['data'])
+            tick = Ticket_Model(ticket=json_data['ticket'])
+            tick.save()
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == "PUT":
+        json_data = json.loads(request.body)
+        try:
+            tick = Ticket_Model.objects.get(pk=json_data['id'])
+            tick.ticket = json_data['ticket']
+            tick.save()
+
+            #print(json_data['data'])
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == "DELETE":
+        json_data = json.loads(request.body)
+        try:
+            tick = Ticket_Model.objects.get(pk=json_data['id'])
+            tick.delete()
+            #print(json_data['data'])
+            return HttpResponse("hello")
+        except:
+            return HttpResponse("Unexpected error:"+str(sys.exc_info()[0]))
+    if request.method == 'GET':
+        ticket_list = Ticket_Model.objects.all()
+        ticket_dictionary = {}
+        ticket_dictionary["tickets"]=[]
+        for tick in ticket_list:
+            ticket_dictionary["tickets"] += [{
+                "id":tick.id,
+                "user":tick.user.username,
+                "event":tick.event.name,
+                "price":tick.price,
+                "info":tick.info
+            }]
+        print(ticket_dictionary)
+        return JsonResponse(ticket_dictionary)
 
 
 # https://collingrady.wordpress.com/2008/02/18/editing-multiple-objects-in-django-with-newforms/

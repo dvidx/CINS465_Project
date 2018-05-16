@@ -8,20 +8,23 @@ from .models import *
 
 import datetime
 
-
-class Survey_Form(forms.Form):
-    survey_name = forms.CharField(label='Survey', required=True, max_length=120) #validators=[validate_slug],
-    survey_creation = forms.DateField(label='Creation', initial=datetime.date.today)
-    survey_size = forms.IntegerField(label='Size')
-    survey_description = forms.CharField(label='Description',required=True, max_length=240)
-
 class Event_Form(forms.Form):
     name = forms.CharField(label='Event', max_length=20, required=True)
-    start_date = forms.DateField(label='Start Date', required=True)
-    end_date = forms.DateField(label='End Date', required=True)
-    location = forms.CharField(label='Location', max_length=50)
-    description = forms.CharField(label='Description', max_length=240)
-    image = forms.ImageField(label='Image')
+    start_date = forms.DateField(label='Start Date', required=False, initial=datetime.date.today)
+    end_date = forms.DateField(label='End Date', required=False, initial=datetime.date.today)
+    location = forms.CharField(label='Location', max_length=50, required=False)
+    description = forms.CharField(label='Description', max_length=240, required=False)
+    image = forms.ImageField(label='Image', required=False)
+    # lng = forms.DecimalField(label='Longitude', required=True)
+    # lat = forms.DecimalField(label='Latitude', required=True)
+
+class Ticket_Form(forms.Form):
+    event = forms.ModelChoiceField(queryset = Event_Model.objects.all(), label='Event', required=True)
+    price = forms.DecimalField(label='Initial price', required=True)
+    info = forms.CharField(label='Info', max_length=240, required=False)
+
+class Bid_Form(forms.Form):
+    bid = forms.DecimalField(label='Your bid', required=True)
 
 class LoginForm(AuthenticationForm):
     username=forms.CharField(

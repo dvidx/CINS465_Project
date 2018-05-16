@@ -13,12 +13,13 @@ Homepage
   <div class="wrap">
     <div class="grid-fluid">
       <div class="grid-x grid-padding-x" id="load-events">
-        <div class="medium-4 cell" v-for="item in events">
+        <div id="boxes" class="medium-4 cell" v-for="item in events">
           {% verbatim %}
           <a href="http://localhost:8000/event/" style="color:inherit">
             <div class="box">
-              <h5>{{ item.event }}</h5>
-              <p>{{ item.description }}</p>
+              <center><h5>{{ item.event }}</h5></center>
+              <hr>
+              <p style="padding: 0px 20px">{{ item.description }}</p>
             </div>
           </a>
           {% endverbatim %}
@@ -31,4 +32,16 @@ Homepage
 
 {% block scripts %}
 <script src="{% static "js/vueapp.js" %}"></script>
+<script>
+$('.contact-name').hide();
+$('#search').click(function(){
+    $('.medium-4 cell').hide();
+    var txt = $('#search-criteria').val();
+    $('.medium-4 cell').each(function(){
+       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+           $(this).show();
+       }
+    });
+});
+</script>
 {% endblock %}
