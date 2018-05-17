@@ -116,7 +116,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 // Markers from DB
-$.getJSON('http://localhost:8000/events/', function(results) {
+$.getJSON('/events/', function(results) {
 
   var count = 0
   for (i in results.events) {

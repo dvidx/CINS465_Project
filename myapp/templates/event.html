@@ -7,7 +7,7 @@ Event
 {% endblock %}
 
 {% block body %}
-
+{% if user.is_authenticated %}
 <div class="wrap" style="text-align: center">
   <div class="row">
     <div class="small-6 small-centered columns">
@@ -66,6 +66,31 @@ Event
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+{% else %}
+<div class="wrap">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <h4 class="text-center">You need to be logged <br/> in to view this site</h4>
+  <br>
+  <br>
+  <center>
+    <a href="/login/" class="button large">Login</a><br/>
+    <a href="/register/" class="secondary button large">Register</a>
+  </center>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+{% endif %}
 {% endblock %}
 {% block scripts %}
 <script src="{% static "js/vueapp.js" %}"></script>

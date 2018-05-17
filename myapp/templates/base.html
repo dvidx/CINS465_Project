@@ -28,7 +28,7 @@
         <div class="top-bar-right">
           <ul class="menu">
             <li><input type="search" placeholder="Search" id="search-criteria"></li>
-            <li><button type="button" class="button" id="search" value="search">Search</button></li>
+            <li><button type="button" class="button" id="search" value="search" onclick="doSearch();">Search</button></li>
             {% if user.is_authenticated %}
             <li><a href="/logout/">Logout</a></li>
             {% else %}
@@ -83,6 +83,28 @@
     <script src="{% static "js/vendor/what-input.js" %}"></script>
     <script src="{% static "js/vendor/foundation.js" %}"></script>
     <script src="{% static "js/app.js" %}"></script>
+    <script>
+    //https://stackoverflow.com/questions/21860663/search-for-text-with-javascript-inside-a-div-class
+    function doSearch() {
+      var searchValue = document.getElementById('search-criteria').value;
+
+      // $(".main").each(function(){
+      //   if($(this).html().indexOf(searchValue) > -1){
+      //      console.log();
+      //   }
+      // });
+      var parentDOM = document.getElementById("boxes");
+
+      var boxes=parentDOM.getElementsByClassName("box");
+      for(var i = 0; i < boxes.length; i++){
+         var box=parentDOM.getElementsByClassName("box")[i];
+         console.log(box);
+      }
+
+
+
+    }
+    </script>
     {% block scripts %}
     {% endblock %}
   </body>
