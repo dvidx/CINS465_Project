@@ -81,12 +81,14 @@ def event(request):
         elif 'Bid' in request.POST:
             bid_form = Bid_Form(request.POST)
             if bid_form.is_valid():
-                bid = Bid_Model(
-                    event=bid_form.cleaned_data['event'],
-                    price=bid_form.cleaned_data['price'],
-                    user=request.user
+                value = bid_form.cleaned_data['ticket'].id
+                bid = Ticket_Model(
+                    id=int(value),
+                    event=Ticket_Model.objects.get(id=value).event,
+                    price=bid_form.cleaned_data['bid'],
+                    bidder=request.user
                 )
-                bid.save()
+                bid.save(update_fields=['price','bidder'])
                 bid_form = Bid_Form()
                 ticket_form = Ticket_Form()
     else:
@@ -94,12 +96,10 @@ def event(request):
         bid_form = Bid_Form()
 
     ticket_list = Ticket_Model.objects.all()
-    bid_list = Bid_Model.objects.all()
 
     context = {
         "ticket_list":ticket_list,
         "ticket_form":ticket_form,
-        "bid_list":bid_list,
         "bid_form":bid_form
         }
     return render(request, 'event.html', context)
@@ -236,9 +236,14 @@ def ticket_api(request):
         ticket_dictionary = {}
         ticket_dictionary["tickets"]=[]
         for tick in ticket_list:
+            if tick.bidder is not None:
+                bidder = tick.bidder.username
+            else:
+                bidder = "None"
             ticket_dictionary["tickets"] += [{
                 "id":tick.id,
                 "user":tick.user.username,
+                "bidder":bidder,
                 "event":tick.event.name,
                 "price":tick.price,
                 "info":tick.info

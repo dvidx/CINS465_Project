@@ -69,8 +69,9 @@
               <h4>Navigation</h4>
               <hr>
               <a href="/">Home</a>
-              <a href="/map">Map</a>
-              <a href="/chat">Chat</a>
+              <a href="/map/">Map</a>
+              <a href="/chat/">Chat</a>
+              <a href="/event/">Events</a>
             </div>
           </div>
         </div>
@@ -87,7 +88,7 @@
     //https://stackoverflow.com/questions/21860663/search-for-text-with-javascript-inside-a-div-class
     function doSearch() {
       var searchValue = document.getElementById('search-criteria').value;
-
+      console.log(searchValue);
       // $(".main").each(function(){
       //   if($(this).html().indexOf(searchValue) > -1){
       //      console.log();
@@ -100,8 +101,6 @@
          var box=parentDOM.getElementsByClassName("box")[i];
          console.log(box);
       }
-
-
 
     }
     </script>

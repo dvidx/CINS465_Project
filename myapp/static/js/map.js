@@ -3,6 +3,7 @@ var marker;
 var infowindow;
 var gmarkers = [];
 
+// Window for event creation
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
 
@@ -29,7 +30,9 @@ function initMap() {
     var latlng = marker.getPosition();
     var lat = latlng.lat();
     var lng = latlng.lng();
-    document.getElementById("myText").innerHTML = "Latitude: " + lat + " & Longitude: " + lng;
+    // document.getElementById("LatLng").innerHTML = "Latitude: " + lat + " & Longitude: " + lng;
+    document.getElementById("lng").value = lng;
+    document.getElementById("lat").value = lat;
 
     gmarkers.push(marker);
     modal.style.display = "block";
@@ -46,7 +49,8 @@ function initMap() {
     }
   }
 
-  // Try HTML5 geolocation.
+
+  // Geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
@@ -78,3 +82,29 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                         'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
 }
+
+// Markers from DB
+$.getJSON('/events/', function(results) {
+
+  var count = 0
+  for (i in results.events) {
+    var count = count + 1;
+  }
+
+  for (var i = 0; i < count; i++) {
+    var lat = results.events[i].lat;
+    lat = Number(lat);
+    var lng = results.events[i].lng;
+    lng = Number(lng);
+    var latLng = {lat: lat, lng: lng};
+
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      icon: 'https://cdn3.iconfinder.com/data/icons/buildings-places/512/Festival-24.png'
+    });
+    marker.addListener('click', function() {
+
+    });
+  }
+});

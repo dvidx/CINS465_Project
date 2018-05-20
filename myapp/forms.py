@@ -25,6 +25,7 @@ class Ticket_Form(forms.Form):
 
 class Bid_Form(forms.Form):
     bid = forms.DecimalField(label='Your bid', required=True)
+    ticket = forms.ModelChoiceField(queryset = Ticket_Model.objects.all(), label='Ticket', required=True)
 
 class LoginForm(AuthenticationForm):
     username=forms.CharField(

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Event_Model(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
     start_date = models.DateField()
     end_date = models.DateField()
     location = models.CharField(max_length=50, blank=True)
@@ -23,31 +23,41 @@ class Event_Model(models.Model):
 class Ticket_Model(models.Model):
     user = models.ForeignKey(
         User,
+        null=True,
+        related_name='user',
         on_delete=models.CASCADE
     )
     event = models.ForeignKey(
         Event_Model,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True
+    )
+    bidder = models.ForeignKey(
+        User,
+        null=True,
+        related_name='bidder',
+        on_delete=models.CASCADE,
+        blank=True
     )
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    info = models.CharField(max_length=240)
+    info = models.CharField(max_length=240, blank=True)
 
     def __str__(self):
-        return "Ticket " + str(self.id) + ": " + str(self.user)
+        return "Ticket " + str(self.id) + ": " + str(self.event) + " by " + str(self.user)
 
-class Bid_Model(models.Model):
-    ticket = models.ForeignKey(
-        Ticket_Model,
-        on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-    bid = models.DecimalField(max_digits=6, decimal_places=2)
-
-    def __str__(self):
-        return "Bid " + str(self.id) + ": " + str(self.ticket)
+# class Bid_Model(models.Model):
+#     ticket = models.ForeignKey(
+#         Ticket_Model,
+#         on_delete=models.CASCADE
+#     )
+#     user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE
+#     )
+#     bid = models.DecimalField(max_digits=6, decimal_places=2)
+#
+#     def __str__(self):
+#         return "Bid " + str(self.id) + ": " + str(self.ticket)
 
 class Profil_Model(models.Model):
     user = models.OneToOneField(
