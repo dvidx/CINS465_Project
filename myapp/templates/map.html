@@ -12,23 +12,32 @@ Map
 <div id="myModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
+    {% if user.is_authenticated %}
     <h1><center>Create an event<center></h1>
     <form action="/map/" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="text" id="lng" name="lng" style="display: none">
         <input type="text" id="lat" name="lat" style="display: none">
-        <!-- <input type="submit" class="button expanded" value="Submit"/> -->
         <br>
         <button class="button expanded">Submit</button>
-        <!-- <span id="LatLng"></span> -->
     </form>
+    {% else %}
+    <br>
+    <h4 class="text-center">You need to be logged <br/> in to view this form</h4>
+    <br id="lng"> <!-- break tags only have id so no error is produced -->
+    <br id="lat"> <!-- if no user is authenticated (Cause id gets assigned value in JS) -->
+    <center>
+      <a href="/login/" class="button large">Login</a><br/>
+      <a href="/register/" class="secondary button large">Register</a>
+    </center>
+    <br>
+    {% endif %}
   </div>
 </div>
-
 {% endblock %}
 {% block scripts %}
-<!-- Adapted from: https://developers.google.com/maps/documentation/javascript/geolocation-->
+<!-- Adapted from: https://developers.google.com/maps/documentation/javascript -->
 <script>
 var map;
 var marker;
