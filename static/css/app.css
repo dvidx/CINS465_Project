@@ -1,0 +1,119 @@
+/* 1. General */
+/* 1.1 Link Color*/
+a {
+  color: #1779ba;
+}
+
+/*  1.2 Content margin */
+.wrap {
+  width: 90%;
+  margin: 0 auto;
+}
+
+/*  1.3 Footer*/
+footer {
+  height: 300px;
+  width: 100%;
+  background-color: #343434;
+  padding: 80px 0px;
+  /* position: sticky;
+  bottom: 0; */
+}
+
+footer a {
+  display: block;
+}
+
+footer h4{
+  color: rgba(255,255,255,0.8);
+}
+
+/* 1.4 Top Bar  */
+.top-bar {
+      background-color: #343434;
+    }
+
+.top-bar ul {
+      background-color: #343434;
+    }
+
+/* 2. Homepage */
+.main {
+  padding: 80px 0px;
+  background: linear-gradient(#e6e6e6, white 20%, #e6e6e6 80%);
+}
+
+.box {
+    height: 200px;
+    width: 100%;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 10px 10px 5px #e6e6e6;
+    border: 2px outset #e6e6e6;
+}
+
+#boxes {
+  padding-bottom: 20px;
+}
+
+/* 3. Google Maps */
+#map {
+  height: 850px;
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 80px 0px;
+}
+
+/* The Modal (background) */
+/* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal_img */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 5% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* 4. Chat */
+#load-chat {
+      height: 420px;
+      overflow: auto;
+    }
+
+/* 5. Event */
+.accordion-title {
+    font-size: 40px !important;
+    color: black;
+}
